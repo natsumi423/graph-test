@@ -14,6 +14,7 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  height: 100vh;
 }
 
 body {
@@ -30,13 +31,48 @@ body {
   margin: 0;
 }
 
-a {
+/*a {
   color: inherit;
   text-decoration: none;
-}
+}*/
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+}
+
+.custom-tooltip {
+  border: 1px solid rgb(204, 204, 204);
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+  margin: 0px;
+  white-space: nowrap;
+}
+
+.custom-tooltip__label {
+  margin: 0px;
+}
+
+.custom-tooltip__list {
+  padding: 0px;
+  margin: 0px;
+}
+
+.custom-tooltip__item {
+  display: block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
