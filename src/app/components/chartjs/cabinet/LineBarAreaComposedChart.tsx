@@ -1,5 +1,7 @@
+
 import React from 'react';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import { useEffect } from 'react';
 
 import {
   Chart as ChartJS,
@@ -26,7 +28,7 @@ ChartJS.register(
   Tooltip,
   LineController,
   BarController,
-  zoomPlugin
+  //zoomPlugin
 );
 
 const originalLabelData = [
@@ -98,7 +100,7 @@ export const data = {
 };
 
 const options = {
-  onClick: (e, elements) => {
+  /*onClick: (e, elements) => {
     if (elements.length > 0) {
       const index = elements[0].index;
 
@@ -107,7 +109,7 @@ const options = {
         window.location.href = url;
       }
     }
-  },
+  },*/
     scales: {
         x: {
             autoSkip: false, // ラベルが重ならないように設定
@@ -115,7 +117,7 @@ const options = {
             minRotation: 0, // 最小回転を0に設定
         },
         y: {
-            beginAtZero: true, // Y 軸をゼロから始める
+            beginAtZero: true, // Y軸をゼロから始める
             min: 0, // 最小値
             max: 100, // 最大値
             /*ticks: {
@@ -129,29 +131,32 @@ const options = {
       },
     plugins: {
         zoom: {
-            pan: {
-                enabled: true, // パンを有効にする
-                mode: 'x', // xy方向でパンを許可
-                modifierKey: 'ctrl' // Ctrlキーでパン
+          pan: {
+            enabled: true,
+            mode: "x"
+          },
+          zoom: {
+            wheel: {
+              enabled: true
             },
-            zoom: {
-                mode: 'x', // xy方向でズームを許可
-                wheel: {
-                    enabled: true, // マウスホイールでズームを有効にする
-                    modifierKey: 'ctrl' // Ctrlキーでズーム
-                },
-                pinch: {
-                    enabled: true       // Enable pinch zooming
-                },
-                drag: {
-                    enabled: true, // ドラッグによるズームを有効にする
-                },
-            }
+            pinch: {
+              enabled: true
+            },
+            mode: "x"
+          }
         }
         
       }
 };
 
 export function LineBarAreaComposedChart() {
+  useEffect(() => {
+    const plugins = ChartJS?.registry?.plugins
+    if (typeof window !== 'undefined' && plugins && !plugins.get('zoom')) {
+      import('chartjs-plugin-zoom').then(plugin => {
+        ChartJS.register(plugin.default)
+      })
+    }
+  }, [])
   return <Chart role='img' aria-label='内閣支持率のグラフ' type='bar' data={data} options={options}/>;
 }
