@@ -115,7 +115,7 @@ const options = {
             minRotation: 0, // 最小回転を0に設定
         },
         y: {
-            beginAtZero: true, // Y 軸をゼロから始める
+            beginAtZero: true, // Y軸をゼロから始める
             min: 0, // 最小値
             max: 100, // 最大値
             /*ticks: {
