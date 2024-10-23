@@ -7,8 +7,6 @@ const data = [
   { name: '不明', value: 30 },
 ];
 
-const text = '〜〜ですか？' + `${data[0].name}:${data[0].value}%、${data[1].name}:${data[1].value}%、${data[2].name}:${data[2].value}%`
-
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
 
 const RADIAN = Math.PI / 180;
@@ -33,7 +31,7 @@ export default class PieChartWithCustomizedLabel extends PureComponent {
     return (
       <>
         <ResponsiveContainer width="100%" height="80%">
-          <PieChart width={400} height={400} accessibilityLayer role='img' aria-label="円グラフ" aria-describedby="chart-description">
+          <PieChart width={400} height={400} accessibilityLayer aria-label="円グラフ">
             <Pie
               data={data}
               cx="50%"
@@ -52,9 +50,6 @@ export default class PieChartWithCustomizedLabel extends PureComponent {
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
-        <p id="chart-description" className='sr-only'>
-          {text}
-        </p>
         <table
           style={{
             width: '50%',

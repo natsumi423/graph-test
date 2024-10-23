@@ -58,11 +58,32 @@ const data = [
     },
 ];
 
-const headers = ['支持', '不支持', '無回答'];
+const renderCustomAxisTick = ({ x, y, payload }) => {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <foreignObject x={-10} y={10} width={50} height={200}>
+        <a
+          href="https://www.google.com"
+          rel="noopener noreferrer"
+          style={{
+            color: '#1a0dab',
+            textDecoration: 'overline',
+            textDecorationColor: '#1a0dab',
+            display: 'block',
+            writingMode: 'vertical-rl',
+            textOrientation: 'upright',
+            cursor: 'pointer',
+          }}
+        >
+          {payload.value}
+        </a>
+      </foreignObject>
+    </g>
+  );
+};
 
-const text = '内閣支持率は' + data.map(item => {
-  return `${item.name}は支持${item.支持}%、不支持${item.不支持}%、無回答${item.無回答}%`;
-}).join('、') + '。';
+
+const headers = ['支持', '不支持', '無回答'];
 
 const CustomizedShape = (props) => {
   const { cx, cy, 支持 } = props;
@@ -101,34 +122,27 @@ export default class LineBarAreaComposedChart extends PureComponent {
       <>
         <ResponsiveContainer width="100%" height="80%">
           <ComposedChart
-            role='img'
             aria-label="内閣支持率のグラフ"
-            aria-describedby="chart-description"
-            width={500}
-            height={400}
             data={data}
             margin={{
               top: 5,
               right: 30,
               left: 20,
-              bottom: 5,
+              bottom: 200,
             }}
             accessibilityLayer
           >
             <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name" />
+            <XAxis dataKey="name" tick={renderCustomAxisTick}/>
             <YAxis domain={[0, 100]} tickCount={11}/> {/* Y軸の範囲を0〜100に設定し、10間隔に近い目盛りに */}
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend verticalAlign='top' />
             <Bar dataKey="無回答" barSize={20} fill="#413ea0" />
             <Line type="linear" dataKey="支持" stroke="blue"/>
             <Line type="linear" dataKey="不支持" stroke="red" />
             <Scatter dataKey="支持" shape={<CustomizedShape />} legendType="none"/>
           </ComposedChart>
         </ResponsiveContainer>
-        <p id="chart-description" className='sr-only'>
-          {text}
-        </p>
         <table
           style={{
             width: '100%',

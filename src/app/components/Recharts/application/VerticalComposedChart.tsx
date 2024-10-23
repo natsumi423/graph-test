@@ -59,10 +59,6 @@ const data = [
 
 const headers = ['自民', '共産', '社会', '支持なし'];
 
-const text = '政党支持率は' + data.map(item => {
-  return `${item.name}は自民${item.自民}%、共産${item.共産}%、社会${item.社会}%、支持なし${item.支持なし}%`;
-}).join('、') + '。';
-
 export default class VerticalComposedChart extends PureComponent {
   static demoUrl = 'https://codesandbox.io/p/sandbox/vertical-composed-chart-6r8xmw';
 
@@ -71,9 +67,7 @@ export default class VerticalComposedChart extends PureComponent {
       <>
         <ResponsiveContainer width="100%" height="80%">
           <ComposedChart
-            role='img'
             aria-label="政党支持率のグラフ"
-            aria-describedby="chart-description"
             layout="vertical"
             width={500}
             height={400}
@@ -97,9 +91,6 @@ export default class VerticalComposedChart extends PureComponent {
             <Bar dataKey="支持なし" stackId="seito" fill="#82ca9d" />
           </ComposedChart>
         </ResponsiveContainer>
-        <p id="chart-description" className='sr-only'>
-          {text}
-        </p>
         <table
           style={{
             width: '100%',
