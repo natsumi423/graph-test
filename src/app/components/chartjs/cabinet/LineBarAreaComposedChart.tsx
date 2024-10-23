@@ -1,7 +1,6 @@
 
 import React from 'react';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { useEffect } from 'react';
 
 import {
   Chart as ChartJS,
@@ -28,7 +27,7 @@ ChartJS.register(
   Tooltip,
   LineController,
   BarController,
-  //zoomPlugin
+  zoomPlugin
 );
 
 const originalLabelData = [
@@ -100,7 +99,7 @@ export const data = {
 };
 
 const options = {
-  /*onClick: (e, elements) => {
+  onClick: (e, elements) => {
     if (elements.length > 0) {
       const index = elements[0].index;
 
@@ -109,7 +108,7 @@ const options = {
         window.location.href = url;
       }
     }
-  },*/
+  },
     scales: {
         x: {
             autoSkip: false, // ラベルが重ならないように設定
@@ -150,13 +149,6 @@ const options = {
 };
 
 export function LineBarAreaComposedChart() {
-  useEffect(() => {
-    const plugins = ChartJS?.registry?.plugins
-    if (typeof window !== 'undefined' && plugins && !plugins.get('zoom')) {
-      import('chartjs-plugin-zoom').then(plugin => {
-        ChartJS.register(plugin.default)
-      })
-    }
-  }, [])
+
   return <Chart role='img' aria-label='内閣支持率のグラフ' type='bar' data={data} options={options}/>;
 }
