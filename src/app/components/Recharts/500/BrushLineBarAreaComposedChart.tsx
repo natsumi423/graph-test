@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState } from 'react';
 import {
   ComposedChart,
   Line,
@@ -82,10 +82,17 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-export default class LineBarAreaComposedChart extends PureComponent {
-  static demoUrl = 'https://codesandbox.io/p/sandbox/simple-composed-chart-lyz572';
+const LineBarAreaComposedChart = () => {
+    const [startIndex, setStartIndex] = useState(0);
+    const [endIndex, setEndIndex] = useState(40);
 
-  render() {
+    const interval = endIndex - startIndex > 40 ? undefined : 0;
+
+    const handleBrushChange = (newBrush) => {
+      // newBrushからstartIndexとendIndexを計算して設定
+      setStartIndex(newBrush.startIndex);
+      setEndIndex(newBrush.endIndex);
+    };
     return (
       <>
         <ResponsiveContainer width="100%" height="100%">
@@ -103,7 +110,7 @@ export default class LineBarAreaComposedChart extends PureComponent {
             accessibilityLayer
           >
             <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name" height={250} tick={renderCustomAxisTick}/>
+            <XAxis dataKey="name" height={250} tick={renderCustomAxisTick} interval={interval}/>
             <YAxis domain={[0, 100]} tickCount={11} /> {/* Y軸の範囲を0〜100に設定し、10間隔に近い目盛りに */}
             <Tooltip content={<CustomTooltip />} />
             <Legend verticalAlign='top' />
@@ -111,10 +118,10 @@ export default class LineBarAreaComposedChart extends PureComponent {
             <Line type="linear" dataKey="支持" stroke="blue"/>
             <Line type="linear" dataKey="不支持" stroke="red" />
             <Scatter dataKey="支持" shape={<CustomizedShape />} legendType="none"/>
-            <Brush dataKey="name" startIndex={1} endIndex={9}  />
+            <Brush dataKey="name" startIndex={startIndex} endIndex={endIndex} onChange={handleBrushChange} />
           </ComposedChart>
         </ResponsiveContainer>
       </>
     );
   }
-}
+export default LineBarAreaComposedChart
