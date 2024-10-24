@@ -18,32 +18,36 @@ import { data } from '@/app/constants/Recharts/cabinetData';
 
 const renderCustomAxisTick = ({ x, y, payload }) => {
   return (
-    <g transform={`translate(${x},${y})`}>
-        <a
-          href="https://www.google.com"
-          rel="noopener noreferrer"
+    <g transform={`translate(${x}, ${y})`}>
+      <a
+        href={"https://www.google.com?q=" + payload.value}
+        rel="noopener noreferrer"
+        style={{ cursor: 'pointer' }}
+        className="svg-link"
+      >
+        <text
+          x={0}
+          y={0}
+          dy={200}
+          textAnchor="end"
           style={{
-            // color: '#1a0dab',
-            textDecoration: 'overline',
-            textDecorationColor: '#1a0dab',
-            display: 'block',
             cursor: 'pointer',
+            writingMode: 'vertical-rl',
+            textOrientation: 'upright',
+            fill: '#1a0dab',
           }}
+          className="link-text"
         >
-          <text
-            x={0}
-            y={0}
-            dy={200} // Y軸位置調整
-            textAnchor="end" // テキストの整列
-            fill="#1a0dab"
+          <tspan
             style={{
-                cursor: 'pointer',
-                writingMode: 'vertical-rl', // 縦書きの設定
-                textOrientation: 'upright', // テキストの向きを正しく設定
-            }}>
-              {payload.value}
-            </text>
-        </a>
+              textDecoration: 'overline',
+              textDecorationColor: '#1a0dab',
+            }}
+          >
+            {payload.value}
+          </tspan>
+        </text>
+      </a>
     </g>
   );
 };

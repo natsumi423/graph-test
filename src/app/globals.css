@@ -96,3 +96,16 @@ body {
   top: 0;
   background-color: ghostwhite;  /* ここをコメントアウトすると、背景色が透明になるので、Y軸を透かしてグラフ部分が見えるようになる */
 }
+
+.svg-link .link-text tspan {
+  fill: #1a0dab;
+  text-decoration: overline;
+  text-decoration-color: #1a0dab;
+  cursor: pointer;
+}
+
+/* 閲覧済みリンクのスタイル (適用されない可能性あり) */
+.svg-link:visited .link-text tspan {
+  fill: #6a0dcd;
+  text-decoration-color: #6a0dcd;
+}
