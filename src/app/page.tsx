@@ -1,6 +1,8 @@
 'use client'
 import Link from 'next/link';
 
+import LineBarAreaComposedChart from './components/Recharts/500/BrushLineBarAreaComposedChart';
+
 const Page = () => {
   
 
@@ -35,13 +37,19 @@ const Page = () => {
         </ul>
       </div>
       */}
-      <div style={{ padding: '100px', alignItems: 'center'}}>
+
+      <div style={{ padding: '50px', height: '100vh', textAlign: "center", width: '100%', }}>
+        {/*<p>500件の場合（role='application'、ブラシ）</p>*/}
+        <LineBarAreaComposedChart />
+      </div>
+
+      {/*<div style={{ padding: '100px', alignItems: 'center'}}>
         <h2>サンプル</h2>
         <ul>
           <li><Link href="/chartjs/cabinet">react-chartjs-2で作成した内閣支持率のグラフ</Link></li>
           <li><Link href="/Recharts/500/cabinet/brush">Rechartsで作成した内閣支持率のグラフ</Link></li>
         </ul>
-      </div>
+      </div>*/}
     </>
     
   )
