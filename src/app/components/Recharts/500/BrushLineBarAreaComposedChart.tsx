@@ -57,7 +57,7 @@ const CustomizedShape = (props) => {
   const { cx, cy, 支持 } = props;
   return (
     <g>
-      <rect x={cx - 10} y={cy - 10} width={20} height={20} fill="blue" />
+      <rect x={cx - 10} y={cy - 10} width={20} height={20} fill="#0554F2" />
       <text x={cx} y={cy} fill="#fff" textAnchor="middle" dominantBaseline="middle">
         {支持}
       </text>
@@ -71,15 +71,49 @@ const CustomTooltip = ({ active, payload, label }) => {
       <div className="custom-tooltip" role="status" aria-live="assertive">
         <p className="custom-tooltip__label">{label}</p>
         <ul className="custom-tooltip__list">
-          <li className="custom-tooltip__item" style={{ color: '#413ea0' }}>{`${payload[0].dataKey} : ${payload[0].value}%`}</li>
-          <li className="custom-tooltip__item" style={{ color: 'blue' }}>{`${payload[1].dataKey} : ${payload[1].value}%`}</li>
-          <li className="custom-tooltip__item" style={{ color: 'red' }}>{`${payload[2].dataKey} : ${payload[2].value}%`}</li>
+          <li className="custom-tooltip__item" style={{ color: '#0554F2' }}>{`${payload[1].dataKey} : ${payload[1].value}%`}</li>
+          <li className="custom-tooltip__item" style={{ color: '#D9048E' }}>{`${payload[2].dataKey} : ${payload[2].value}%`}</li>
+          <li className="custom-tooltip__item" style={{ color: '#D9D9D9' }}>{`${payload[0].dataKey} : ${payload[0].value}%`}</li>
         </ul>
       </div>
     );
   }
 
   return null;
+};
+
+const CustomLegend = (props) => {
+  const { payload } = props;
+
+  const orderedPayload = [
+    payload[1], // 支持
+    payload[2], // 不支持
+    payload[0], // 無回答
+  ];
+
+  return (
+    <ul className="custom-legend" style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', justifyContent: 'flex-start' }}>
+      {orderedPayload.map((entry, index) => (
+        <li key={`item-${index}`} style={{ display: 'flex', alignItems: 'center', color: 'black', marginRight: '20px' }}>
+          {/* アイコンの描画 */}
+          <div style={{ width: '20px', height: '20px', marginRight: '5px' }}>
+            {entry.dataKey === '無回答' ? (
+              <div style={{ width: '100%', height: '100%', backgroundColor: entry.color }} /> // 四角形
+            ) : (
+              <div style={{ 
+                width: '100%', 
+                height: '2px', 
+                backgroundColor: entry.color, 
+                transform: 'rotate(0deg)', 
+                marginTop: '10px'
+              }} />
+            )}
+          </div>
+          <span>{entry.value}</span>
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 const LineBarAreaComposedChart = () => {
@@ -93,8 +127,25 @@ const LineBarAreaComposedChart = () => {
       setStartIndex(newBrush.startIndex);
       setEndIndex(newBrush.endIndex);
     };
+
+    const handleZoomIn = () => {
+      setEndIndex(endIndex + 1)
+    };
+    
+    const handleZoomOut = () => {
+      setEndIndex(endIndex - 1)
+    };
+
+    const isZoomOutDisabled = endIndex <= startIndex
+    const isZoomInDisabled = data.length - 1 <= endIndex
+
     return (
       <>
+        <div style={{display: 'flex', justifyContent: 'flex-end'}}>
+          <button disabled={isZoomOutDisabled} onClick={handleZoomOut} style={{ backgroundColor: isZoomOutDisabled ? '#A9A9A9' : '#4D4D4D', color: '#ffffff', paddingLeft: 10, paddingRight:10 , paddingTop: 5, paddingBottom: 5, borderRadius: 4, border: 'none' }}>拡大</button>
+          <button disabled={isZoomInDisabled} onClick={handleZoomIn} style={{ backgroundColor: isZoomInDisabled ? '#A9A9A9' : '#4D4D4D', color: '#ffffff', paddingLeft: 10, paddingRight:10 , paddingTop: 5, paddingBottom: 5, borderRadius: 4, border: 'none' }}>縮小</button>
+        </div>
+
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart
             aria-label="内閣支持率のグラフ"
@@ -109,16 +160,17 @@ const LineBarAreaComposedChart = () => {
             }}
             accessibilityLayer
           >
-            <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name" height={250} tick={renderCustomAxisTick} interval={interval}/>
+            <CartesianGrid stroke="#E8E8E8" vertical={false} />
+            <XAxis dataKey="name" height={250} tick={renderCustomAxisTick} interval={interval} />
             <YAxis domain={[0, 100]} tickCount={11} /> {/* Y軸の範囲を0〜100に設定し、10間隔に近い目盛りに */}
             <Tooltip content={<CustomTooltip />} />
-            <Legend verticalAlign='top' />
-            <Bar dataKey="無回答" barSize={20} fill="#413ea0" />
-            <Line type="linear" dataKey="支持" stroke="blue"/>
-            <Line type="linear" dataKey="不支持" stroke="red" />
+            <Legend content={<CustomLegend />} verticalAlign='top' align="left" wrapperStyle={{paddingLeft: "20px", paddingBottom: "20px"}} />
+            <Bar dataKey="無回答" barSize={15} fill="#D9D9D9" />
+            <Line strokeWidth={1.5} type="linear" dataKey="支持" stroke="#0554F2"/>
+            <Line strokeWidth={1.5} type="linear" dataKey="不支持" stroke="#D9048E" dot={false}/>
             <Scatter dataKey="支持" shape={<CustomizedShape />} legendType="none"/>
-            <Brush dataKey="name" startIndex={startIndex} endIndex={endIndex} onChange={handleBrushChange} />
+            <Brush dataKey="name" startIndex={startIndex} endIndex={endIndex} onChange={handleBrushChange} style={{ cursor: 'pointer' }}
+            height={20} tickFormatter={() => ''} updateOnDrag={false} /*travellerWidth={0}*//>
           </ComposedChart>
         </ResponsiveContainer>
       </>
