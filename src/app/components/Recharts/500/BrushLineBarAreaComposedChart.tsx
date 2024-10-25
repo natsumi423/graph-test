@@ -1,3 +1,5 @@
+import  styles from '@/app/styles/page.module.css';
+
 import React, { PureComponent, useState } from 'react';
 import {
   ComposedChart,
@@ -18,37 +20,23 @@ import { data } from '@/app/constants/Recharts/cabinetData';
 
 const renderCustomAxisTick = ({ x, y, payload }) => {
   return (
-    <g transform={`translate(${x}, ${y})`}>
-      <a
-        href={"https://www.google.com?q=" + payload.value}
-        rel="noopener noreferrer"
-        style={{ cursor: 'pointer' }}
-        className="svg-link"
-      >
-        <text
-          x={0}
-          y={0}
-          dy={200}
-          textAnchor="end"
-          style={{
-            cursor: 'pointer',
-            writingMode: 'vertical-rl',
-            textOrientation: 'upright',
-            fill: '#1a0dab',
-          }}
-          className="link-text"
-        >
-          <tspan
-            style={{
-              textDecoration: 'overline',
-              textDecorationColor: '#1a0dab',
-            }}
-          >
-            {payload.value}
-          </tspan>
-        </text>
-      </a>
-    </g>
+    <a
+      href={"https://www.google.com?q=" + payload.value}
+      rel="noopener noreferrer"
+      className={styles.svgLink}
+      style={{ 
+        transform: `translate(${x}px, ${y}px)`,
+      }}
+    >
+    <text
+      x={0}
+      y={200}
+      textAnchor="end"
+      className={styles.linkText}
+    >
+      {payload.value}
+    </text>
+  </a>
   );
 };
 
