@@ -1,0 +1,16 @@
+.linkText {
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  fill: #2A398C;
+  text-decoration: overline;
+  text-decoration-color: #2A398C;
+  text-orientation: upright;
+  text-anchor: end;
+}
+
+/* 閲覧済みリンクのスタイル (適用されない可能性あり) */
+.svgLink:visited .linkText {
+  fill: #6a0dcd;
+  text-decoration-color: #6a0dcd;
+}
+
